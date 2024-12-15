@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world-node-port-service
+spec:
+  selector:
+    app: hello-world-server
+  # It will apply the set node port to all the clusters to be accessible externally using the node ip + the node port set here
+  type: NodePort 
+  ports:
+  - name: hello-world-node-port-service
+    # port of the service that we'll access
+    port: 80
+    # port of the container that our service will redirect to
+    targetPort: 80
+    protocol: TCP
+    nodePort: 30001 # this port must be between 30000 and 32767

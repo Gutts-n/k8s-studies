@@ -1,0 +1,13 @@
+apiVersion: v1
+
+kind: Pod
+
+metadata:
+  name: hello-world-server
+  labels:
+    app: hello-world-server
+
+spec:
+  containers:
+    - name: hello-world-server
+      image: hello-world

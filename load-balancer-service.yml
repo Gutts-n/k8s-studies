@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world-load-balancer-service
+spec:
+  selector:
+    app: hello-world-server
+  type: LoadBalancer 
+  ports:
+  - name: hello-world-load-balancer-service
+    # port of the service that we'll access
+    port: 80
+    # port of the container that our service will redirect to
+    targetPort: 80
+    protocol: TCP

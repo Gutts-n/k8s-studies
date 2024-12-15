@@ -1,0 +1,24 @@
+# this will be different from other configs because the api of the deployment is a different folder
+apiVersion: apps/v1 
+kind: Deployment 
+metadata:
+  name: hello-world-deployment
+  labels:
+    app: hello-world-server
+
+spec:
+  selector:
+    matchLabels:
+      app: hello-world-server
+  replicas: 10
+  # Configuration of the pod (yml created for our pods)
+  template: 
+    metadata:
+      name: hello-world-server
+      labels:
+        app: hello-world-server
+
+    spec:
+      containers:
+        - name: hello-world-server
+          image: nginxdemos/hello
