@@ -10,7 +10,7 @@ spec:
   selector:
     matchLabels:
       app: hello-world-server
-  replicas: 10
+  replicas: 1
   # Configuration of the pod (yml created for our pods)
   template: 
     metadata:
@@ -22,3 +22,26 @@ spec:
       containers:
         - name: hello-world-server
           image: nginxdemos/hello
+          # This way we can use directly the name of the variables
+          # from the config configMap file
+          # honestly this is the best way to do it
+          envFrom:
+            - configMapRef:
+                - name: hello-world-server-env
+          # env:
+            # This way we can add the variables directly
+            #- name: ENV_NAME
+            #  value: ENV_VALUE
+
+            #  This way we can add via configmap file
+            # - name: ENV_NAME
+            #   valueFrom: 
+            #     configMapKeyRef:
+            #       name: hello-world-server-env
+            #       key: ENV_NAME
+            # - name: ANOTHER_ENV_NAME
+            #   valueFrom: 
+            #     configMapKeyRef:
+            #       name: hello-world-server-env
+            #       key: ANOTHER_ENV_NAME
+            
