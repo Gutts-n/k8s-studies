@@ -22,12 +22,18 @@ spec:
       containers:
         - name: hello-world-server
           image: nginxdemos/hello
+
           # This way we can use directly the name of the variables
           # from the config configMap file
           # honestly this is the best way to do it
           envFrom:
+            # This is for configMap files
             - configMapRef:
-                - name: hello-world-server-env
+                name: hello-world-server-env
+            # This is for secret files
+            - secretRef:
+                name: hello-world-secret
+
           # env:
             # This way we can add the variables directly
             #- name: ENV_NAME
@@ -44,4 +50,18 @@ spec:
             #     configMapKeyRef:
             #       name: hello-world-server-env
             #       key: ANOTHER_ENV_NAME
-            
+
+          volumeMounts:
+            - mountPath: "/app/myfamily"
+              name: config # name of the volume declared on the line 57
+              readOnly: true
+
+      # declare volumes
+      volumes:
+        - name: config
+          configMap:
+            name: configmap-family
+            items:
+            - key: members
+              # path to the file/folder that you want to be available on the volume
+              path: "family.txt"
