@@ -11,5 +11,5 @@ spec:
     # port of the service that we'll access
     port: 80
     # port of the container that our service will redirect to
-    targetPort: 80
+    targetPort: 8000
     protocol: TCP
