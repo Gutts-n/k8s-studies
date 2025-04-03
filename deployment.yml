@@ -21,24 +21,29 @@ spec:
     spec:
       containers:
         - name: hello-world-server
-          image: wesleywillians/hello-go:v5.5
-          readinessProbe:
-            httpGet:
-              path: /healthz
-              port: 8000 # this must be the pod port
-            periodSeconds: 3 # each 5 seconds it'll send a get http request to our service
-            failureThreshold: 1 # number of timeouts that it can receives until restart the pod
-            initialDelaySeconds: 10 # wait X seconds until start to send the validations (can be used on the liveness as well)
+          image: wesleywillians/hello-go:v9.6
+          resources:
+            requests: # minimum of resources to my pod works
+              cpu: "0.05"
+              memory: 20Mi
+            limits: # limit of resources that my pod can consume independent of the load received on it
+              cpu: "0.05" 
+              memory: 25Mi
+
           startupProbe:
             httpGet:
               path: /healthz
               port: 8000 # this must be the pod port
-            periodSeconds: 5 # each 5 seconds it'll send a get http request to our service
-            failureThreshold: 1 # number of timeouts that it can receives until restart the pod
-            timeoutSeconds: 1 # limit of seconds to complete the request to verify if the pod is healthy,
-                              # if reached out it'll send a count to the failureTreshold 
-            successThreshold: 1 # number of verifications to ensure that the pod is healthy in a livenessProbe
+            periodSeconds: 3 # each 3 seconds it'll send a get http request to our service
+            failureThreshold: 30 # number of timeouts that it can receives until restart the pod
 
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000 # this must be the pod port
+            periodSeconds: 3 # each 3 seconds it'll send a get http request to our service
+            failureThreshold: 1 # number of timeouts that it can receives until restart the pod
+            # initialDelaySeconds: 10 # wait X seconds until start to send the validations (can be used on the liveness as well)
           livenessProbe:
             httpGet:
               path: /healthz
@@ -47,7 +52,7 @@ spec:
             failureThreshold: 1 # number of timeouts that it can receives until restart the pod
             timeoutSeconds: 1 # limit of seconds to complete the request to verify if the pod is healthy,
                               # if reached out it'll send a count to the failureTreshold 
-            initialDelaySeconds: 15 # wait X seconds until start to send the validations (can be used on the liveness as well)
+            # initialDelaySeconds: 15 # wait X seconds until start to send the validations (can be used on the liveness as well)
             successThreshold: 1 # number of verifications to ensure that the pod is healthy in a livenessProbe
           # This way we can use directly the name of the variables
           # from the config configMap file

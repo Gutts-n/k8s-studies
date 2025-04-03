@@ -1,0 +1,14 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hello-world-server
+spec:
+  scaleTargetRef: # the target that it'll apply the HPA
+    apiVersion: apps/v1
+    name: hello-world-deployment
+    kind: Deployment
+  minReplicas: 1 # the minimum of recommended is 2
+  maxReplicas: 30 # we must set that to it doesn't create infinite deployments
+  targetCPUUtilizationPercentage: 25 # minus than that it'll scale down, more than that it'll scale up
+                                      # recommended value is 70-75
+
